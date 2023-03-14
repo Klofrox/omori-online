@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Çevrimiçi Chat</title>
+  </head>
+  <body>
+    <div id="chat"></div>
+    <form>
+      <input type="text" id="chatroom" placeholder="Chat odası adı">
+      <input type="text" id="message" placeholder="Mesajınız">
+      <button type="submit">Gönder</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
+
+    <script>
+      // Firebase yapılandırması
+      var firebaseConfig = {
+        apiKey: "AIzaSyBT_OgkKu2RKNUQj31V0jSJJ_Vyp66xvMw",
+        authDomain: "omorionline-a93f2.firebaseapp.com",
+        databaseURL: "https://omorionline-a93f2-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "omorionline-a93f2",
+        storageBucket: "omorionline-a93f2.appspot.com",
+        messagingSenderId: "867416887756",
+        appId: "1:867416887756:web:3d488420f3a72ff7590d69",
+      };
+      
+      firebase.initializeApp(firebaseConfig);
+
+      var database = firebase.database();
+      var chatroomRef = database.ref("chatrooms");
+
+      // Formu gönder
+      document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var chatroom = document.getElementById("chatroom").value;
+        var message = document.getElementById("message").value;
+        var messagesRef = chatroomRef.child(chatroom).child("messages");
+        var newMessageRef = messagesRef.push();
+        newMessageRef.set({
+          sender: "Kullanıcı Adı",
+          message: message,
+          timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+        document.getElementById("message").value = "";
+      });
+
+      // Mesajları dinle ve chat divinde göster
+      chatroomRef.child("room1").child("messages").on("child_added", function(snapshot) {
+        var message = snapshot.val().message;
+        var sender = snapshot.val().sender;
+        var timestamp = snapshot.val().timestamp;
+        
+        var messageElement = document.createElement("div");
+        messageElement.innerHTML = sender + ": " + message;
+        
+        var chatElement = document.getElementById("chat");
+        chatElement.appendChild(messageElement);
+      });
+    </script>
+  </body>
+</html>

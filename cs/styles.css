@@ -1,0 +1,149 @@
+* {
+  box-sizing:border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(180deg, white -50%, purple 69.71%, pink 150%);
+  font-family: 'Source Sans Pro', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-container { 
+  position: relative;
+  width: 448px;
+  height: 400px;
+  background: url(/images/map88.png) no-repeat no-repeat;
+  transform: scale(2.2);
+  image-rendering: pixelated;
+}
+
+.player-info {
+  position: absolute;
+  top: 0;
+  left:0;
+  padding: 1em;
+  display: flex;
+  gap: 0.5em;
+  align-items: flex-end
+}
+
+.chat{
+   border: 1px solid black;
+   width: 400px;
+   height: 600px;
+   position: relative;
+   background: #222034;
+   margin: 0;
+   padding: 0; 
+   margin-left: 300px;
+   margin-top: 200px;
+}
+
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+button {
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 18px;
+  height: 44px;
+  border-radius: 4px;
+  outline: 0;
+}
+
+input[type="text"] {
+  outline: 0;
+  padding-left: 0.5em;
+  border: 3px solid #222034;
+  width: 150px;
+  text-transform: uppercase;
+}
+input[type="text"]:focus {
+  border-color: #f000ff;
+}
+
+button {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  background: #f000ff;
+  border: 0;
+  border-radius: 4px;
+  outline: 0 wheat;
+  cursor: pointer;
+}
+button:active {
+  position: relative;
+  top: 1px;
+}
+
+/* Characters */
+.grid-cell {
+  position: absolute;
+  width: 24px;
+  height: 30;
+}
+.Character {
+  transition: transform 0.4s;
+}
+.Character.you {
+  z-index: 1;
+}
+.Character.you .Character_you-arrow {
+  display: block;
+}
+
+.Character_sprite {
+  overflow: hidden;
+  top: -3px;
+  background: url(/images/seks.png);
+}
+.Character[data-direction="right"] .Character_sprite {
+  background-position-x: -25px;
+}
+
+.Character[data-direction="up"] .Character_sprite {
+  background-position-x: -50px;
+}
+
+.Character[data-direction="down"] .Character_sprite {
+  background-position-x: -73px;
+}
+
+.Character[data-color="hero"] .Character_sprite {
+  background-position-y: -31.6px;
+}
+
+.Character[data-color="basil"] .Character_sprite {
+  background-position-y: -62.6px;
+}
+
+.Character[data-color="vip"] .Character_sprite {
+  background-position-y: -93.6px;
+}
+
+.Character_shadow {
+  background: url(/images/shadow.png) no-repeat no-repeat;
+}
+
+.Character_name-container {
+  position: absolute;
+  top: -13px;
+  left: -3px;
+  font-size: 6px;
+  padding: 1px 2px 1px;
+  border-radius: 3px;
+  background: #333;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
