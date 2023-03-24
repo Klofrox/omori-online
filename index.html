@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <title>Multiplayer Demo</title>
@@ -5,6 +6,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/cs/styles.css" type="text/css">
+    <style>
+      @font-face{
+        font-family: 'Omori';
+        src: url(fonts/omori.ttf) format('truetype');
+      }
+    </style>
+
   </head>
   <body>
 
@@ -12,33 +20,62 @@
     </div>
     <div class="player-info">
       <div>
-        <label for="player-name">OYUNCU ADI</label>
-        <input id="player-name" maxlength="10" type="text" />
       </div>
-      <div>
-        <button id="player-color">KARAKTER DEĞİŞTİR</button>
+      <div style="margin-top: 15px;">
+        <button id="menu-btn" style="font-family: 'Omori'; font-size: 29px;">KARAKTER DEGİSTİR</button>
+        <h1 style="font-family: 'Omori';">Bu bir demo sürümdür.</h1>
+        <h1 style="font-family: 'Omori';">Version v1.1</h1>
+        <div id="menu" style="display: none;">
+          <div class="omori" style="text-align: center;">
+            <img src="/sprites/omori-down-idle.png" alt="" style="margin-top: 5px;">
+            <br>
+             <button id="omori-button" style="width: 80px; height: 25px; margin-top: 5px; background-color: white; border: 1px solid black; font-family: 'Omori'; font-size: 24px; ">OMORI</button>
+          </div>
+          <div class="basil" style="text-align: center;">
+            <img src="/sprites/basil-down-idle.png" alt="" style="margin-top: 5px;">
+            <br>
+             <button id="basil-button" style="width: 80px; height: 25px; margin-top: 5px; color: black; background-color: yellow; border: 1px solid black; font-family: 'Omori'; font-size: 24px; ">BASIL</button>
+          </div>
+
+          <div class="hero" style="text-align: center;">
+            <img src="/sprites/hero-down-dile.png" alt="" style="margin-top: 5px;">
+            <br>
+             <button id="hero-button" style="width: 80px; height: 25px; margin-top: 5px; background-color: #2a5390; border: 1px solid white; color: white; font-family: 'Omori'; font-size: 24px;">HERO</button>
+          </div>
+          <div class="aubrey" style="text-align: center;">
+            <img src="/sprites/aubrey-down-idle.png" alt="" style="margin-top: 5px;">
+            <br>
+            <button id="aubrey-button" style="width: 80px; height: 25px; margin-top: 5px; background-color: #ff6fde; border: 1px solid white; color: white; font-family: 'Omori'; font-size: 22px;">AUBREY</button>
+          </div>
+          <div class="kel" style="text-align: center;">
+            <img src="/sprites/kel-down-idle.png" alt="" style="margin-top: 5px;">
+            <br>
+            <button id="kel-button" style="width: 80px; height: 25px; margin-top: 5px; background-color: #ff7a4c; border: 1px solid white; color: white; font-family: 'Omori'; font-size: 22px;">KEL</button>
+          </div>
+        </div>
+      
       </div>
     </div>
+
 
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
-      // NOTE - INCLUDE YOUR FIREBASE CONFIG HERE FOR ANYTHING TO WORK:
       const firebaseConfig = {
-        apiKey: "AIzaSyBT_OgkKu2RKNUQj31V0jSJJ_Vyp66xvMw",
-        authDomain: "omorionline-a93f2.firebaseapp.com",
-        databaseURL: "https://omorionline-a93f2-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "omorionline-a93f2",
-        storageBucket: "omorionline-a93f2.appspot.com",
-        messagingSenderId: "867416887756",
-        appId: "1:867416887756:web:3d488420f3a72ff7590d69",
+        apiKey: "AIzaSyARJFLScQSxHz0lX2TMtR8xrLlTqXop1fI",
+        authDomain: "basilcik-online.firebaseapp.com",
+        databaseURL: "https://basilcik-online-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "basilcik-online",
+        storageBucket: "basilcik-online.appspot.com",
+        messagingSenderId: "281433495636",
+        appId: "1:281433495636:web:76a110f1be1c4d580575c1",
       };
       firebase.initializeApp(firebaseConfig);
     </script>
-
-
     <script src="/js/app.js"></script>
+ 
   </body>
 </html>
