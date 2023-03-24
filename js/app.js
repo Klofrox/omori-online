@@ -1,10 +1,22 @@
 const mapData = {
   minX: 0,
-  maxX: 28,
+  maxX: 27,
   minY: 4,
   maxY: 24,
   blockedSpaces: {
     "26x16": true,
+    "25x14": true,
+    "25x13": true,
+    "25x12": true,
+    "25x11": true,
+    "25x10": true,
+    "25x9": true,
+    "25x8": true,
+    "25x7": true,
+    "25x6": true,
+    "25x5": true,
+    "25x4": true,
+    "26x15":true,
     "0x12": true,
     "1x12": true,
     "2x12": true,
@@ -29,19 +41,6 @@ const mapData = {
     "26x12": true,
     "26x11": true,
     "26x10": true,
-    "26x9": true,
-    "26x7": true,
-    "26x8": true,
-    "26x7": true,
-    "26x6": true,
-    "26x5": true,
-    "26x4": true,
-    "26x3": true,
-
-
-
-
-
     "17x12": true,
     "21x11": true,
     "21x10": true,
@@ -51,7 +50,6 @@ const mapData = {
     "21x6": true,
     "21x5": true,
     "21x4": true,
-
     "18x12": true,
     "19x12": true,
     "20x12": true,
@@ -77,12 +75,14 @@ const mapData = {
     "3x20": true,
     "2x20": true,
 
+
   },
 };
 
 // Options for Player Colors... these are in the same order as our sprite sheet
-const playerColors = ["omori", "hero", "basil"];
-const vipColors = ["vip"];
+const playerColors = ["omori", "basil", "hero", "aubrey", "kel"];
+const vipColors = ["bulut"];
+const playerStatus = ["kurucu", "admin", "vip", "oyuncu"];
 
 //Misc Helpers
 function randomFromArray(array) {
@@ -182,19 +182,64 @@ function getRandomSafeSpot() {
 
   const gameContainer = document.querySelector(".game-container");
   const playerNameInput = document.querySelector("#player-name");
-  const playerColorButton = document.querySelector("#player-color");
+  const playerColorBasil = document.querySelector("#basil-button");
+  const playerColorOmori = document.querySelector("#omori-button");
+  const playerColorHero = document.querySelector("#hero-button");
+  const playerColorAubrey = document.querySelector("#aubrey-button");
+  const playerColorKel = document.querySelector("#kel-button");
+  const maxLength = 10;
 
+
+
+
+
+
+
+  const menuBtn = document.getElementById("menu-btn");
+  const menu = document.getElementById("menu");
+
+  menuBtn.addEventListener("click", () => {
+    menu.style.display = menu.style.display === "none" ? "block" : "none";
+  });
+ 
   
+
+
+  function startAnimation(direction) {
+    var character = document.querySelector('.Character');
+    var sprite = document.querySelector('.Character_sprite');
+    sprite.style.animationPlayState = 'running';
+    playerRef.update({ animationState: 'running' });
+
+
+  }
+  
+  function stopAnimation(direction) {
+    var character = document.querySelector('.Character');
+    var sprite = document.querySelector('.Character_sprite');
+    sprite.style.animationPlayState = 'paused';
+    playerRef.update({ animationState: 'paused' });
+
+  }
+
+
+
 
   let keysPressed = {};
 
   document.addEventListener("keydown", (event) => {
+    startAnimation();
     keysPressed[event.code] = true;
+    playerRef.update({ animationState: 'running' });
+
   });
 
   document.addEventListener("keyup", (event) => {
+    stopAnimation();
     keysPressed[event.code] = false;
+    playerRef.update({ animationState: 'paused' });
   });
+
 
   function handleMovement() {
     if (keysPressed["ArrowUp"]) {
@@ -205,37 +250,59 @@ function getRandomSafeSpot() {
       handleArrowPress(-1, 0);
     } else if (keysPressed["ArrowRight"]) {
       handleArrowPress(1, 0);
+    } else {
+      stopAnimation();
     }
+
   }
+  
 
 
-
-  function handleArrowPress(xChange=0, yChange=0) {
-    const newX = players[playerId].x + xChange;
-    const newY = players[playerId].y + yChange;
+  function handleArrowPress(xChange = 0, yChange = 0) {
+    const currentX = players[playerId].x;
+    const currentY = players[playerId].y;
+    const newX = currentX + xChange;
+    const newY = currentY + yChange;
+  
     if (!isSolid(newX, newY)) {
-      //move to the next space
+      for (const id in players) {
+        if (id !== playerId && players[id].x === newX && players[id].y === newY) {
+          stopAnimation();
+          return;
+        }
+      }
+  
       players[playerId].x = newX;
       players[playerId].y = newY;
-      if (xChange === 1) {
+  
+      if (xChange === 1 || keysPressed["arrowright"] || keysPressed["d"]) {
         players[playerId].direction = "right";
       }
-      if (xChange === -1) {
+      if (xChange === -1 || keysPressed["arrowleft"] || keysPressed["a"]) {
         players[playerId].direction = "left";
       }
-      if (yChange === -1) {
+      if (yChange === -1 || keysPressed["arrowup"] || keysPressed["w"]) {
         players[playerId].direction = "up";
       }
-      if (yChange === 1) {
+      if (yChange === 1 || keysPressed["arrowdown"] || keysPressed["s"]) {
         players[playerId].direction = "down";
       }
-
+  
       playerRef.set(players[playerId]);
+      startAnimation();
+    } else {
+      stopAnimation();
     }
   }
 
+
+
+
+  
   function initGame() {
-    setInterval(handleMovement, 150);
+    setInterval(handleMovement, 130);
+
+  
 
     const allPlayersRef = firebase.database().ref(`players`);
 
@@ -246,14 +313,47 @@ function getRandomSafeSpot() {
         const characterState = players[key];
         let el = playerElements[key];
         // Now update the DOM
-        el.querySelector(".Character_name").innerText = characterState.name;
         el.setAttribute("data-color", characterState.color);
         el.setAttribute("data-direction", characterState.direction);
         const left = 16 * characterState.x + "px";
         const top = 16 * characterState.y - 4 + "px";
         el.style.transform = `translate3d(${left}, ${top}, 0)`;
+
+        kurucuid = "BANNZX3glMeaHbOoW4sp5Jz7Kpf2";
+
+     
+
+        if (characterState.color === "bulut"){
+          el.querySelector(".Character_name-container").style.left = "33";
+        }
+
+        
+
+        const animationState = characterState.animationState;
+        if (animationState === "running") {
+          el.querySelector(".Character_sprite").style.animationPlayState = "running";
+        } else if (animationState === "paused") {
+          el.querySelector(".Character_sprite").style.animationPlayState = "paused";
+        }
+
+        if (characterState.status === "kurucu") {
+          el.querySelector(".Character_name").style.color = "red";
+          el.querySelector(".Character_status").style.color = "yellow";
+          el.querySelector(".Character_status").innerText = "(Kurucu)";
+          el.querySelector(".Character_name-container").style.top = "-23";
+
+
+        } else if (characterState.status === "vip") {
+          el.querySelector(".Character_status").style.color = "red";
+          el.querySelector(".Character_status").innerText = "(Vip)";
+        } 
       })
     })
+
+    
+
+
+
     allPlayersRef.on("child_added", (snapshot) => {
       //Fires whenever a new node is added the tree
       const addedPlayer = snapshot.val();
@@ -267,6 +367,8 @@ function getRandomSafeSpot() {
         <div class="Character_sprite grid-cell"></div>
         <div class="Character_name-container">
           <span class="Character_name"></span>
+          <br>
+          <span class="Character_status"></span>
         </div>
       `);
       playerElements[addedPlayer.id] = characterElement;
@@ -282,6 +384,7 @@ function getRandomSafeSpot() {
     })
 
 
+
     //Remove character DOM element after they leave
     allPlayersRef.on("child_removed", (snapshot) => {
       const removedKey = snapshot.val().id;
@@ -292,23 +395,52 @@ function getRandomSafeSpot() {
 
 
     //Updates player name with text input
-    playerNameInput.addEventListener("change", (e) => {
-      const newName = e.target.value || createName();
-      playerNameInput.value = newName;
-      playerRef.update({
-        name: newName
-      })
-    })
+    
 
     //Update player color on button click
-    playerColorButton.addEventListener("click", () => {
+
+    playerColorOmori.addEventListener("click", () => {
       const mySkinIndex = playerColors.indexOf(players[playerId].color);
-      const nextColor = playerColors[mySkinIndex + 1] || playerColors[0];
+      const nextColor = "omori";
       playerRef.update({
         color: nextColor
       })
     })
 
+    playerColorBasil.addEventListener("click", () => {
+      const mySkinIndex = playerColors.indexOf(players[playerId].color);
+      const nextColor = "basil";
+      playerRef.update({
+        color: nextColor
+      })
+    })
+
+    playerColorHero.addEventListener("click", () => {
+      const mySkinIndex = playerColors.indexOf(players[playerId].color);
+      const nextColor = "hero";
+      playerRef.update({
+        color: nextColor
+      })
+    })
+
+    playerColorAubrey.addEventListener("click", () => {
+      const mySkinIndex = playerColors.indexOf(players[playerId].color);
+      const nextColor = "aubrey";
+      playerRef.update({
+        color: nextColor
+      })
+    })
+
+    playerColorKel.addEventListener("click", () => {
+      const mySkinIndex = playerColors.indexOf(players[playerId].color);
+      const nextColor = "kel";
+      playerRef.update({
+        color: nextColor
+      })
+    })
+
+
+  
   }
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -318,8 +450,8 @@ function getRandomSafeSpot() {
       playerId = user.uid;
       playerRef = firebase.database().ref(`players/${playerId}`);
 
+
       const name = createName();
-      playerNameInput.value = name;
 
       const {x, y} = getRandomSafeSpot();
 
@@ -327,8 +459,9 @@ function getRandomSafeSpot() {
       playerRef.set({
         id: playerId,
         name,
+        status,
         direction: "down",
-        color: randomFromArray(playerColors),
+        color: playerColors,
         x,
         y,
       })
