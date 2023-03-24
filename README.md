@@ -2,7 +2,7 @@
 - Hiç bir şekilde para kazanmayı amaçlamayan, tamamen gönüllü bir projedir.
 - Kodları kullanarak kendi çevrimiçi oyunuzu yapabilir, geliştirebilirsiniz.
 - Firebase tabanlı olduğu için firebase hesabına sahip olmanız gerekmektedir.
-- Geliştirici: Kalp Kırıklığı#2612
+- Geliştirici: Nightcore#2612
 
 # Kurulum
 
